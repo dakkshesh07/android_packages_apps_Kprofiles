@@ -117,29 +117,29 @@ public class KProfilesModesTileService extends TileService {
         updateTileContent(null);
     }
 
+    private int getModeResourceStringId(String mode) {
+        switch (mode) {
+            case MODE_NONE:
+                return R.string.kprofiles_modes_none;
+            case MODE_BATTERY:
+                return R.string.kprofiles_modes_battery;
+            case MODE_BALANCED:
+                return R.string.kprofiles_modes_balanced;
+            case MODE_PERFORMANCE:
+                return R.string.kprofiles_modes_performance;
+            default:
+                return R.string.kprofiles_modes_none; // Default to none
+        }
+    }
+
     private void updateTileContent(String mode) {
         Tile tile = getQsTile();
         if (mode == null) mode = getMode();
 
         tile.setState(MODE_NONE.equals(mode) ? Tile.STATE_INACTIVE : Tile.STATE_ACTIVE);
-        switch (mode) {
-            case MODE_NONE:
-                tile.setContentDescription(getResources().getString(R.string.kprofiles_modes_none));
-                tile.setSubtitle(getResources().getString(R.string.kprofiles_modes_none));
-                break;
-            case MODE_BATTERY:
-                tile.setContentDescription(getResources().getString(R.string.kprofiles_modes_battery));
-                tile.setSubtitle(getResources().getString(R.string.kprofiles_modes_battery));
-                break;
-            case MODE_BALANCED:
-                tile.setContentDescription(getResources().getString(R.string.kprofiles_modes_balanced));
-                tile.setSubtitle(getResources().getString(R.string.kprofiles_modes_balanced));
-                break;
-            case MODE_PERFORMANCE:
-                tile.setContentDescription(getResources().getString(R.string.kprofiles_modes_performance));
-                tile.setSubtitle(getResources().getString(R.string.kprofiles_modes_performance));
-                break;
-        }
+        String description = getResources().getString(getModeResourceStringId(mode));
+        tile.setContentDescription(description);
+        tile.setSubtitle(description);
         tile.updateTile();
     }
 
