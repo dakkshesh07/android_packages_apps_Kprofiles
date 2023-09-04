@@ -19,6 +19,11 @@ import androidx.preference.PreferenceManager;
 import com.android.kprofiles.R;
 import com.android.kprofiles.utils.FileUtils;
 
+private static final String MODE_NONE = "0";
+private static final String MODE_BATTERY = "1";
+private static final String MODE_BALANCED = "2";
+private static final String MODE_PERFORMANCE = "3";
+
 public class KProfilesModesTileService extends TileService {
 
     private Context mContext;
@@ -75,17 +80,17 @@ public class KProfilesModesTileService extends TileService {
         if (!IS_SUPPORTED) return;
         String mode = getMode();
         switch (mode) {
-            case "0":
-                mode = "1"; // Set mode from none to battery
+            case MODE_NONE:
+                mode = MODE_BATTERY;
                 break;
-            case "1":
-                mode = "2"; // Set mode from battery to balanced
+            case MODE_BATTERY:
+                mode = MODE_BALANCED;
                 break;
-            case "2":
-                mode = "3"; // Set mode from balanced to performance
+            case MODE_BALANCED:
+                mode = MODE_PERFORMANCE;
                 break;
-            case "3":
-                mode = "0"; // Set mode from performance to none
+            case MODE_PERFORMANCE:
+                mode = MODE_NONE;
                 break;
         }
         setMode(mode);
@@ -116,21 +121,21 @@ public class KProfilesModesTileService extends TileService {
         Tile tile = getQsTile();
         if (mode == null) mode = getMode();
 
-        tile.setState(mode != "0" ? Tile.STATE_ACTIVE : Tile.STATE_INACTIVE);
+        tile.setState(MODE_NONE.equals(mode) ? Tile.STATE_INACTIVE : Tile.STATE_ACTIVE);
         switch (mode) {
-            case "0":
+            case MODE_NONE:
                 tile.setContentDescription(getResources().getString(R.string.kprofiles_modes_none));
                 tile.setSubtitle(getResources().getString(R.string.kprofiles_modes_none));
                 break;
-            case "1":
+            case MODE_BATTERY:
                 tile.setContentDescription(getResources().getString(R.string.kprofiles_modes_battery));
                 tile.setSubtitle(getResources().getString(R.string.kprofiles_modes_battery));
                 break;
-            case "2":
+            case MODE_BALANCED:
                 tile.setContentDescription(getResources().getString(R.string.kprofiles_modes_balanced));
                 tile.setSubtitle(getResources().getString(R.string.kprofiles_modes_balanced));
                 break;
-            case "3":
+            case MODE_PERFORMANCE:
                 tile.setContentDescription(getResources().getString(R.string.kprofiles_modes_performance));
                 tile.setSubtitle(getResources().getString(R.string.kprofiles_modes_performance));
                 break;
