@@ -43,6 +43,7 @@ public class KProfilesModesTileService extends TileService {
 
     @Override
     public void onDestroy() {
+        mContext.unregisterReceiver(mServiceStateReceiver);
         super.onDestroy();
     }
 
