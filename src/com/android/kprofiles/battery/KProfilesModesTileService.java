@@ -19,15 +19,15 @@ import androidx.preference.PreferenceManager;
 import com.android.kprofiles.R;
 import com.android.kprofiles.utils.FileUtils;
 
-private static final String MODE_NONE = "0";
-private static final String MODE_BATTERY = "1";
-private static final String MODE_BALANCED = "2";
-private static final String MODE_PERFORMANCE = "3";
-
 public class KProfilesModesTileService extends TileService {
 
     private Context mContext;
     private boolean mSelfChange = false;
+
+    private static final String MODE_NONE = "0";
+    private static final String MODE_BATTERY = "1";
+    private static final String MODE_BALANCED = "2";
+    private static final String MODE_PERFORMANCE = "3";
 
     @Override
     public void onCreate() {
