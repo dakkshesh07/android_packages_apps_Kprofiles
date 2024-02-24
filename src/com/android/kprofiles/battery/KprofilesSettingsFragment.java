@@ -128,10 +128,15 @@ public class KprofilesSettingsFragment extends PreferenceFragment implements
                 } catch(Exception e) { }
                 break;
             case KPROFILES_MODES_KEY:
-                final String value = (String) newValue;
+                final String autoValue = FileUtils.readOneLine(KPROFILES_AUTO_NODE);
+                if (autoValue != null && autoValue.equals(OFF)) {
+                    // Automatic mode switching is disabled, do not change mode
+                    return false;
+                }
+                final String modeValue = (String) newValue;
                 try {
-                    FileUtils.writeLine(KPROFILES_MODES_NODE, value);
-                    updateTitle(value);
+                    FileUtils.writeLine(KPROFILES_MODES_NODE, modeValue);
+                    updateTitle(modeValue);
                     mSelfChange = true;
                     Intent intent = new Intent(INTENT_ACTION);
                     intent.setFlags(Intent.FLAG_RECEIVER_REGISTERED_ONLY);
@@ -153,26 +158,26 @@ public class KprofilesSettingsFragment extends PreferenceFragment implements
 
     private String modesDesc(String mode) {
         if (mode == null) mode = "0";
-        String descrpition = null;
+        String description = null;
         if (!IS_SUPPORTED) return getString(R.string.kprofiles_not_supported);
         switch (mode) {
             case "0":
-                descrpition = getString(R.string.kprofiles_modes_none_description);
+                description = getString(R.string.kprofiles_modes_none_description);
                 break;
             case "1":
-                descrpition = getString(R.string.kprofiles_modes_battery_description);
+                description = getString(R.string.kprofiles_modes_battery_description);
                 break;
             case "2":
-                descrpition = getString(R.string.kprofiles_modes_balanced_description);
+                description = getString(R.string.kprofiles_modes_balanced_description);
                 break;
             case "3":
-                descrpition = getString(R.string.kprofiles_modes_performance_description);
+                description = getString(R.string.kprofiles_modes_performance_description);
                 break;
             default:
-                descrpition = getString(R.string.kprofiles_modes_none_description);
+                description = getString(R.string.kprofiles_modes_none_description);
                 break;
         }
-        return descrpition;
+        return description;
     }
 
     private void updateTitle(String value) {
